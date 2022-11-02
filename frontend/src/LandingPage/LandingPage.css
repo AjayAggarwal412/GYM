@@ -1,0 +1,65 @@
+.main {
+  border-radius: 50%;
+  height: 15%;
+  width: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 8%;
+}
+
+.title {
+  font-size: 60px;
+  margin-top: 20px;
+}
+
+.subtitle {
+  font-size: 25px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.landingbutton {
+  width: 200px;
+  height: 55px;
+}
+
+.intro-text {
+  width: 100%;
+  text-align: center;
+}
+
+.buttonContainer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+@media only screen and (min-width: 1200px) {
+  .buttonContainer {
+    padding: 0 200px;
+  }
+  .title {
+    padding: 0 100px;
+  }
+
+  /* .main {
+    height: 110px;
+    width: 130px;
+  } */
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    font-size: 60px;
+  }
+  .landingbutton {
+    width: 150px;
+    height: 50px;
+  }
+
+  .main {
+    height: 110px;
+    width: 130px;
+  }
+}

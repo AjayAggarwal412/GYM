@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MyClients from "./MyClients/MyClients";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
+import CreateClient from "./CreateClient/CreateClient";
+import SingleClient from "./SingleClient.js/SingleClient";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/myclients" element={<MyClients />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create" element={<CreateClient />} />
+          <Route path="/newclients/:id" element={<SingleClient />} />
         </Routes>
       </Router>
     </React.Fragment>

@@ -1,4 +1,8 @@
 .add {
   margin-left: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 20px;
+}
+
+.edit {
+  padding-left: 150px;
 }

@@ -3,49 +3,42 @@ import MainScreen from "../MainScreen/MainScreen";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import axios from "axios";
+import ErrorMessage from "../ErrorMessage";
+import Loading from "../Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../actions/userActions";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+
+  const { loading, error, userInfo } = userLogin;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/home");
+    }
+  }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    //console.log(email, password);
-
-    try {
-      const config = {
-        headers: { "Content-type": "application/json" },
-      };
-
-      setLoading(true);
-
-      const data = await fetch("http://localhost:5000/api/gym/login", {
-        method: "post",
-        body: JSON.stringify({ email, password }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const response = await data.json();
-
-      console.log(response);
-
-      localStorage.setItem("userInfo", JSON.stringify(data));
-
-      setLoading(false);
-    } catch (error) {
-      setError(error.response.data.message);
-    }
+    dispatch(login(email, password));
   };
 
   return (
     <MainScreen title="LOGIN">
       <div className="loginContainer">
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -72,7 +65,7 @@ const Login = () => {
           </Button>
           <Row className="py-3">
             <Col>
-              New User ?<Link to="/register">Register here</Link>
+              New User? <Link to="/register">Register here</Link>
             </Col>
           </Row>
         </Form>

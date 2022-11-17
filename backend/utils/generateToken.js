@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+const JWT_SECRET = "ajay1234";
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, `${process.env.JWT_SECRET_KEY}`, {
+  return jwt.sign({ id }, JWT_SECRET, {
     expiresIn: "30d",
   });
 };

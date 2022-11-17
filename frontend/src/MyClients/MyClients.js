@@ -1,22 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Accordion, Badge, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Button, Table } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import MainScreen from "../MainScreen/MainScreen";
 import "./MyClients.css";
-import axios from "axios";
+import Loading from "../Loading";
+import ErrorMessage from "../ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
+import { listClients } from "../actions/clientActions";
 
 const MyClients = () => {
-  const [clients, setClients] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const fetchNotes = async () => {
-    const { data } = await axios.get("/api/myclients");
+  const clientList = useSelector((state) => state.clientList);
 
-    setClients(data);
-  };
+  const { loading, clients, error } = clientList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+
+  const { userInfo } = userLogin;
+
+  const clientCreate = useSelector((state) => state.clientCreate);
+  const { success: successCreate } = clientCreate;
+
+  const clientUpdate = useSelector((state) => state.clientUpdate);
+  const { success: successUpdate } = clientUpdate;
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    dispatch(listClients());
+
+    if (!userInfo) {
+      navigate("/");
+    }
+  }, [dispatch, navigate, successCreate, successUpdate, userInfo]);
 
   const deleteHandler = () => {
     if (window.confirm("Are you sure you want to delete the client?")) {
@@ -24,57 +40,50 @@ const MyClients = () => {
   };
 
   return (
-    <MainScreen title="Welcome Back Ajay Aggarwal...">
-      <Link to="/addclient">
+    <MainScreen title={`Welcome Back ${userInfo?.name}...`}>
+      <Link to="/create">
         <Button className="add" size="lg">
           Add Clients
         </Button>
       </Link>
+      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+      {loading && <Loading />}
 
-      {clients?.map((data) => (
-        <Card style={{ margin: 10 }} key={data._id}>
-          <Card.Header style={{ display: "flex" }}>
-            <span
-              style={{
-                color: "black",
-                textDecoration: "none",
-                flex: 1,
-                cursor: "pointer",
-                alignSelf: "center",
-                fontSize: 18,
-              }}
-            >
-              {data.name}
-            </span>
-
-            <div>
-              <Button href={`/client/${data._id}`}>Edit</Button>
-              <Button
-                variant="danger"
-                className="mx-2"
-                onClick={() => deleteHandler(data._id)}
-              >
-                Delete
-              </Button>
-            </div>
-          </Card.Header>
-
-          {/* <Card.Body>
-            <h4>
-              <Badge bg="success" text="light">
-                Monthly Plan
-              </Badge>
-            </h4>
-            <blockquote className="blockquote mb-0">
-              <p>Plan ends in 3 days</p>
-              <footer style={{ float: "right" }} className="blockquote-footer">
-                Joined on 10/5/2022
-                <cite title="Source Title"></cite>
-              </footer>
-            </blockquote>
-          </Card.Body> */}
-        </Card>
-      ))}
+      <div style={{ padding: "10px" }}>
+        <Table striped bordered hover>
+          <>
+            <thead>
+              <tr>
+                <th>Client ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Joining Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {clients?.reverse().map((data) => (
+                <tr key={data._id}>
+                  <td>{data.clientId}</td>
+                  <td>{data.name}</td>
+                  <td>{data.phone}</td>
+                  <td>{data.joiningDate}</td>
+                  <td width="160">
+                    <Button href={`/newClients/${data._id}`}>Edit</Button>
+                    <Button
+                      variant="danger"
+                      className="mx-2"
+                      onClick={() => deleteHandler()}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </>
+        </Table>
+      </div>
     </MainScreen>
   );
 };

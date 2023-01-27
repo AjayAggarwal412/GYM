@@ -2,6 +2,9 @@ import {
   CLIENTS_CREATE_FAIL,
   CLIENTS_CREATE_REQUEST,
   CLIENTS_CREATE_SUCCESS,
+  CLIENTS_DASHBOARD_FAIL,
+  CLIENTS_DASHBOARD_REQUEST,
+  CLIENTS_DASHBOARD_SUCCESS,
   CLIENTS_DELETE_FAIL,
   CLIENTS_DELETE_REQUEST,
   CLIENTS_DELETE_SUCCESS,
@@ -59,6 +62,23 @@ export const clientDeleteReducer = (state = {}, action) => {
     case CLIENTS_DELETE_SUCCESS:
       return { loading: false, success: true };
     case CLIENTS_DELETE_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const clientDashboardReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CLIENTS_DASHBOARD_REQUEST:
+      return { loading: true };
+    case CLIENTS_DASHBOARD_SUCCESS:
+      return {
+        loading: false,
+        totalClients: action.payload,
+        success: true,
+      };
+    case CLIENTS_DASHBOARD_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
       return state;

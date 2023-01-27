@@ -55,6 +55,7 @@ const Register = () => {
               placeholder="Enter name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -65,6 +66,7 @@ const Register = () => {
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -76,6 +78,7 @@ const Register = () => {
               maxLength="10"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -86,6 +89,7 @@ const Register = () => {
               placeholder="Enter Gym name"
               value={gymName}
               onChange={(e) => setGymName(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -96,6 +100,7 @@ const Register = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -108,6 +113,7 @@ const Register = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
           </Form.Group>
 

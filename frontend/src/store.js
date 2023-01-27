@@ -3,10 +3,16 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {
   clientCreateReducer,
+  clientDashboardReducer,
+  clientDeleteReducer,
   clientListReducer,
   clientUpdateReducer,
 } from "./reducers/clientReducers";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userUpdateReducer,
+} from "./reducers/userReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -14,6 +20,9 @@ const reducer = combineReducers({
   clientList: clientListReducer,
   clientCreate: clientCreateReducer,
   clientUpdate: clientUpdateReducer,
+  clientDelete: clientDeleteReducer,
+  clientDashboardScreen: clientDashboardReducer,
+  userUpdate: userUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

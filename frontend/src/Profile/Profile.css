@@ -1,0 +1,14 @@
+._label {
+  margin-top: 20px;
+}
+
+.profileContainer {
+  display: flex;
+  margin: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .profileContainer {
+    flex-direction: column-reverse;
+  }
+}

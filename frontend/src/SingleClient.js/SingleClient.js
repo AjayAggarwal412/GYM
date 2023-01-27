@@ -3,16 +3,21 @@ import MainScreen from "../MainScreen/MainScreen";
 import axios from "axios";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { updateClientAction } from "../actions/clientActions";
+import {
+  deleteClientAction,
+  updateClientAction,
+} from "../actions/clientActions";
 import ErrorMessage from "../ErrorMessage";
 import Loading from "../Loading";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 
 function SingleClient() {
   const [clientId, setClientId] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [joiningDate, setJoiningDate] = useState("");
+  const [plan, setPlan] = useState();
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,15 +27,27 @@ function SingleClient() {
   const clientUpdate = useSelector((state) => state.clientUpdate);
   const { loading, error } = clientUpdate;
 
-  //   const noteDelete = useSelector((state) => state.noteDelete);
-  //   const { loading: loadingDelete, error: errorDelete } = noteDelete;
+  const clientDelete = useSelector((state) => state.clientDelete);
+  const { loading: loadingDelete, error: errorDelete } = clientDelete;
 
-  //   const deleteHandler = (id) => {
-  //     if (window.confirm("Are you sure?")) {
-  //       dispatch(deleteNoteAction(id));
-  //     }
-  //     navigate("/mynotes");
-  //   };
+  const options = [
+    { label: "Monthly (Rs.1200)", value: "Monthly (Rs.1200)" },
+    { label: "Quaterly (Rs.3300)", value: "Quaterly (Rs.3300)" },
+    { label: "Half-yearly (Rs.4800)", value: "Half-yearly (Rs.4800)" },
+    { label: "Yearly (Rs.9600)", value: "Yearly (Rs.9600)" },
+  ];
+
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(deleteClientAction(id));
+    }
+    navigate("/myclients");
+  };
+
+  const handleChange = (e) => {
+    setPlan(e.value);
+    //console.log(e.value);
+  };
 
   useEffect(() => {
     const fetching = async () => {
@@ -42,6 +59,7 @@ function SingleClient() {
       setName(data.name);
       setPhone(data.phone);
       setJoiningDate(data.joiningDate);
+      setPlan(data.plan);
     };
 
     fetching();
@@ -56,8 +74,8 @@ function SingleClient() {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updateClientAction(id, clientId, name, phone, joiningDate));
-    if (!clientId || !name || !phone || !joiningDate) return;
+    dispatch(updateClientAction(id, clientId, name, phone, joiningDate, plan));
+    if (!clientId || !name || !phone || !joiningDate || !plan) return;
 
     resetHandler();
     navigate("/myclients");
@@ -69,11 +87,11 @@ function SingleClient() {
         <Card.Header>Edit your Client</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
-            {loading && <Loading />}
+            {loadingDelete && <Loading />}
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-            {/* {errorDelete && (
+            {errorDelete && (
               <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-            )} */}
+            )}
 
             <Form.Group>
               <Form.Label>Client ID</Form.Label>
@@ -87,7 +105,7 @@ function SingleClient() {
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Name</Form.Label>
+              <Form.Label style={{ marginTop: "20px" }}>Name</Form.Label>
               <Form.Control
                 type="title"
                 placeholder="Enter the name"
@@ -115,10 +133,20 @@ function SingleClient() {
                 type="date"
                 placeholder="Enter the joining date"
                 value={joiningDate}
-                style={{ marginBottom: "40px" }}
+                style={{ marginBottom: "20px" }}
                 onChange={(e) => setJoiningDate(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Label>Plan</Form.Label>
+            <div style={{ marginBottom: "20px" }}>
+              <Select
+                placeholder="Select Plan"
+                value={options.find((obj) => obj.value === plan)}
+                onChange={handleChange}
+                options={options}
+              />
+            </div>
 
             {loading && <Loading size={50} />}
 
@@ -129,9 +157,9 @@ function SingleClient() {
             <Button
               className="mx-2"
               variant="danger"
-              //   onClick={() => deleteHandler(id)}
+              onClick={() => deleteHandler(id)}
             >
-              Delete Note
+              Delete Client
             </Button>
           </Form>
         </Card.Body>

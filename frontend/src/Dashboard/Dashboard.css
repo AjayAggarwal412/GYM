@@ -1,0 +1,48 @@
+.members {
+  height: 230px;
+  width: 350px;
+  background-color: rgb(7, 221, 7);
+}
+
+.month {
+  background-color: rgb(84, 84, 255);
+  width: 500px;
+}
+
+.income {
+  width: 500px;
+  background-color: rgb(243, 91, 91);
+}
+
+._title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.text {
+  margin-top: 70px;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.members_logo {
+  height: 110px;
+  width: 100px;
+  opacity: 0.2;
+  float: right;
+}
+
+.join_logo {
+  margin-top: 15px;
+  height: 80px;
+  width: 100px;
+  opacity: 0.2;
+  float: right;
+}
+
+.income_logo {
+  height: 100px;
+  width: 100px;
+  opacity: 0.2;
+  float: right;
+}

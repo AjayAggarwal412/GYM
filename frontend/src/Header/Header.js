@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,48 +23,57 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to={`${userInfo ? "/home" : ""}`}>
-          Iron Champs Gym
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="m-auto">
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-            </Form>
-          </Nav>
+    <>
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Brand as={Link} to={`${userInfo ? "/home" : ""}`}>
+            <img src={require("../images/logo.PNG")} className="logo" />
+            {userInfo.gymName}
+          </Navbar.Brand>
 
-          <Nav
-            className="my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            <Nav.Link as={Link} to="/dashboard">
-              Dashboard
-            </Nav.Link>
-            <Nav.Link as={Link} to="/myclients">
-              List of Clients
-            </Nav.Link>
-            <NavDropdown
-              title={`${userInfo ? userInfo.name : "Guest"}`}
-              id="navbarScrollingDropdown"
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="m-auto">
+              <Form className="d-flex">
+                <Form.Control
+                  type="text"
+                  placeholder="Search"
+                  className="me-2"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </Form>
+            </Nav>
+
+            <Nav
+              className="my-2 my-lg-0"
+              style={{ maxHeight: "100px" }}
+              navbarScroll
             >
-              <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
-              <NavDropdown.Item onClick={logoutHandler}>
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+              <Nav.Link as={Link} to="/dashboard">
+                Dashboard
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/create">
+                Add new Client
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/myclients">
+                List of Clients
+              </Nav.Link>
+              <NavDropdown
+                title={`${userInfo ? userInfo.name : "Guest"}`}
+                id="navbarScrollingDropdown"
+              >
+                <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={logoutHandler}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 

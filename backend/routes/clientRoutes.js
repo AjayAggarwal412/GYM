@@ -5,6 +5,9 @@ const {
   getClientById,
   updateClient,
   deleteClient,
+  dashboard,
+  month,
+  notify,
 } = require("../controllers/clientControllers");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -17,5 +20,7 @@ router
   .get(getClientById)
   .put(protect, updateClient)
   .delete(protect, deleteClient);
+
+router.route("/dashboard").post(dashboard);
 
 module.exports = router;

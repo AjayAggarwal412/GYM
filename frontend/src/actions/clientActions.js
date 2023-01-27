@@ -1,11 +1,19 @@
-import Axios from "axios";
 import {
   CLIENTS_CREATE_FAIL,
   CLIENTS_CREATE_REQUEST,
   CLIENTS_CREATE_SUCCESS,
+  CLIENTS_DASHBOARD_FAIL,
+  CLIENTS_DASHBOARD_REQUEST,
+  CLIENTS_DASHBOARD_SUCCESS,
+  CLIENTS_DELETE_FAIL,
+  CLIENTS_DELETE_REQUEST,
+  CLIENTS_DELETE_SUCCESS,
   CLIENTS_LIST_FAIL,
   CLIENTS_LIST_REQUEST,
   CLIENTS_LIST_SUCCESS,
+  CLIENTS_NOTIFY_FAIL,
+  CLIENTS_NOTIFY_REQUEST,
+  CLIENTS_NOTIFY_SUCCESS,
   CLIENTS_UPDATE_FAIL,
   CLIENTS_UPDATE_REQUEST,
   CLIENTS_UPDATE_SUCCESS,
@@ -22,7 +30,7 @@ export const listClients = () => async (dispatch, getState) => {
 
     const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-    const { data } = await Axios.get(
+    const { data } = await axios.get(
       "http://localhost:5000/api/newClients",
       config
     );
@@ -39,7 +47,7 @@ export const listClients = () => async (dispatch, getState) => {
 };
 
 export const createClientAction =
-  (clientId, name, phone, joiningDate) => async (dispatch, getState) => {
+  (clientId, name, phone, joiningDate, plan) => async (dispatch, getState) => {
     try {
       dispatch({ type: CLIENTS_CREATE_REQUEST });
 
@@ -56,7 +64,7 @@ export const createClientAction =
 
       const { data } = await axios.post(
         `http://localhost:5000/api/newClients/create`,
-        { clientId, name, phone, joiningDate },
+        { clientId, name, phone, joiningDate, plan },
         config
       );
 
@@ -72,7 +80,8 @@ export const createClientAction =
   };
 
 export const updateClientAction =
-  (id, clientId, name, phone, joiningDate) => async (dispatch, getState) => {
+  (id, clientId, name, phone, joiningDate, plan) =>
+  async (dispatch, getState) => {
     try {
       dispatch({ type: CLIENTS_UPDATE_REQUEST });
 
@@ -89,7 +98,7 @@ export const updateClientAction =
 
       const { data } = await axios.put(
         `http://localhost:5000/api/newClients/${id}`,
-        { clientId, name, phone, joiningDate },
+        { clientId, name, phone, joiningDate, plan },
         config
       );
 
@@ -103,3 +112,59 @@ export const updateClientAction =
       dispatch({ type: CLIENTS_UPDATE_FAIL, payload: message });
     }
   };
+
+export const deleteClientAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CLIENTS_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://localhost:5000/api/newClients/${id}`,
+      config
+    );
+
+    dispatch({ type: CLIENTS_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({ type: CLIENTS_DELETE_FAIL, payload: message });
+  }
+};
+
+export const clientDashboard = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CLIENTS_DASHBOARD_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
+
+    const { data } = await axios.post(
+      "http://localhost:5000/api/newClients/dashboard",
+      config
+    );
+
+    dispatch({ type: CLIENTS_DASHBOARD_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({ type: CLIENTS_DASHBOARD_FAIL, payload: message });
+  }
+};

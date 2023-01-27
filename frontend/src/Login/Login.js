@@ -47,6 +47,7 @@ const Login = () => {
               value={email}
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -57,6 +58,7 @@ const Login = () => {
               value={password}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </Form.Group>
 

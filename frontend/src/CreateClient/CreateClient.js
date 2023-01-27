@@ -6,18 +6,27 @@ import { createClientAction } from "../actions/clientActions";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 function CreateClient() {
   const [clientId, setClientId] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [joiningDate, setJoiningDate] = useState("");
+  const [plan, setPlan] = useState();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const clientCreate = useSelector((state) => state.clientCreate);
   const { loading, error, client } = clientCreate;
+
+  const options = [
+    { label: "Monthly     (Rs.1200)", value: "Monthly     (Rs.1200)" },
+    { label: "Quaterly    (Rs.3300)", value: "Quaterly    (Rs.3300)" },
+    { label: "Half-yearly (Rs.4800)", value: "Half-yearly (Rs.4800)" },
+    { label: "Yearly      (Rs.9600)", value: "Yearly      (Rs.9600)" },
+  ];
 
   //   console.log(note);
 
@@ -26,30 +35,20 @@ function CreateClient() {
     setName("");
     setPhone("");
     setJoiningDate("");
+    setPlan(null);
+  };
+
+  const handleChange = (e) => {
+    setPlan(e.value);
+    //console.log(e.value);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(createClientAction(clientId, name, phone, joiningDate));
+    dispatch(createClientAction(clientId, name, phone, joiningDate, plan));
 
-    if (!clientId || !name || !phone || !joiningDate) return;
-
-    // if (id) {
-    //   //res.status(400);
-    //   throw new Error("Client Id already exists!!!");
-    // } else {
-    //   dispatch(createClientAction(id, name, phone, joiningDate));
-    //   resetHandler();
-
-    //   navigate("/myclients");
-    // }
-
-    // if (client.clientId) {
-    //   alert("Client already exists");
-    //   resetHandler();
-    //   return;
-    // }
+    if (!clientId || !name || !phone || !joiningDate || !plan) return;
 
     resetHandler();
 
@@ -103,10 +102,20 @@ function CreateClient() {
                 type="date"
                 value={joiningDate}
                 placeholder="Enter the Joining Date"
-                style={{ marginBottom: "40px" }}
+                style={{ marginBottom: "20px" }}
                 onChange={(e) => setJoiningDate(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Label>Plan</Form.Label>
+            <div style={{ marginBottom: "20px" }}>
+              <Select
+                placeholder="Select Plan"
+                value={options.find((obj) => obj.value === plan)}
+                onChange={handleChange}
+                options={options}
+              />
+            </div>
 
             {loading && <Loading size={50} />}
 

@@ -22,10 +22,14 @@ const clientSchema = mongoose.Schema(
     phone: {
       type: String,
       required: true,
-      unique: true,
     },
 
     joiningDate: {
+      type: Date,
+      required: true,
+    },
+
+    plan: {
       type: String,
       required: true,
     },

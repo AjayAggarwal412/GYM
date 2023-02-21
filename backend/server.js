@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const clientRoutes = require("./routes/clientRoutes");
@@ -25,6 +26,13 @@ app.get("/", (req, res) => {
 
 app.use("/api/gym", userRoutes);
 app.use("/api/newClients", clientRoutes);
+
+//static files
+app.use(express.static(path.join(__dirname, "./frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./frontend/build/index.html"));
+});
 
 app.use(notFound);
 app.use(errorHandler);

@@ -26,7 +26,7 @@ This project was built using the following technologies:
 This gym management system includes the following features:
 
 * Authentication and authorization for gym owners
-* Dashboard for gym owners to manage gym operations, including adding and removing members, updating members details and tracking finances
+* Dashboard for gym owners to manage gym operations, including adding and removing members, updating members details and gym owner profile and tracking finances
 * Mobile-responsive design for easy use on all devices
 
 ## Setup and Installation
@@ -42,4 +42,3 @@ To run this project on your local machine, follow these steps:
 ## Usage
 
 To use this gym management system, navigate to the URL of your local server in your web browser. You can log in as a gym owner to access different features and functionality.
-

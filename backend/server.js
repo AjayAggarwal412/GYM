@@ -6,7 +6,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const { errorHandler, notFound } = require("./middlewares/errorMiddleware");
-const clients = require("../frontend/src/data");
+//const clients = require("../frontend/src/data");
 
 const app = express();
 dotenv.config();

@@ -72,7 +72,7 @@ const MyClients = ({ search }) => {
       return a.clientId < b.clientId ? 1 : -1;
     });
     setData(sortedAsceding);
-    console.log(data);
+    //console.log(data);
   };
 
   return (
